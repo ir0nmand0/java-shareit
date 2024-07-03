@@ -8,18 +8,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import ru.practicum.shareit.exception.EntityDuplicateException;
 import ru.practicum.shareit.exception.EntityNotFoundByIdException;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.model.dto.CreateItemDto;
 import ru.practicum.shareit.item.model.dto.ItemDto;
 import ru.practicum.shareit.item.model.dto.PatchItemDto;
 import ru.practicum.shareit.item.model.dto.UpdateItemDto;
-import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.storage.ItemStorage;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.storage.UserStorage;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -27,9 +26,7 @@ import java.util.Optional;
 public class ItemServiceImpl implements ItemService {
     @Qualifier("mvcConversionService")
     private final ConversionService cs;
-    @Qualifier("inMemoryItemStorage")
     private final ItemStorage itemStorage;
-    @Qualifier("inMemoryUserStorage")
     private final UserStorage userStorage;
 
     @Override
@@ -127,16 +124,11 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private Item findItemByIdOrElseThrow(final long id) {
-        Optional<Item> item = itemStorage.findById(id);
-
-        if (item.isEmpty()) {
+        return itemStorage.findById(id).orElseThrow(() -> {
             final String message = "Item not found by id " + id;
             log.warn(message);
-
             throw new EntityNotFoundByIdException("Item", message);
-        }
-
-        return item.get();
+        });
     }
 
     private void checkCreatorOfTheItem(final long userId, final long correctUserId) {
@@ -148,16 +140,11 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private User findUserByIdOrElseThrow(final long id) {
-        Optional<User> user = userStorage.findById(id);
-
-        if (user.isEmpty()) {
+        return userStorage.findById(id).orElseThrow(() -> {
             final String message = "User not found by id " + id;
             log.warn(message);
-
             throw new EntityNotFoundByIdException("User", message);
-        }
-
-        return user.get();
+        });
     }
 
     private Collection<Item> findItemByTextOrElseThrow(final String text) {

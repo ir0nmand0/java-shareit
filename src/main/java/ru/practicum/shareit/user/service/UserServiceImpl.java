@@ -24,7 +24,6 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     @Qualifier("mvcConversionService")
     private final ConversionService cs;
-    @Qualifier("inMemoryUserStorage")
     private final UserStorage userStorage;
 
     public UserDto create(final CreateUserDto createUserDto) {
@@ -94,15 +93,10 @@ public class UserServiceImpl implements UserService {
     }
 
     private User findByIdOrElseThrow(final long id) {
-        Optional<User> user = userStorage.findById(id);
-
-        if (user.isEmpty()) {
-            String message = "User not found by id " + id;
+        return userStorage.findById(id).orElseThrow(() -> {
+            final String message = "User not found by id " + id;
             log.warn(message);
-
             throw new EntityNotFoundByIdException("User", message);
-        }
-
-        return user.get();
+        });
     }
 }

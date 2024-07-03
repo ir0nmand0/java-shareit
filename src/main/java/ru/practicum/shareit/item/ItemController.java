@@ -3,7 +3,6 @@ package ru.practicum.shareit.item;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.exception.ConditionsNotMetException;
@@ -22,7 +21,6 @@ import java.util.Collection;
 @RequestMapping("/items")
 @RequiredArgsConstructor
 public class ItemController {
-    @Qualifier("itemServiceImpl")
     private final ItemService itemService;
     private static final String X_SHARER_USER_ID = "X-Sharer-User-Id";
 

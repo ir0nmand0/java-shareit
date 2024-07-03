@@ -3,7 +3,6 @@ package ru.practicum.shareit.user;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.model.dto.CreateUserDto;
@@ -21,7 +20,6 @@ import java.util.Collection;
 @RequestMapping(path = "/users")
 @RequiredArgsConstructor
 public class UserController {
-    @Qualifier("userServiceImpl")
     private final UserService userService;
     private static final String ERROR_MESSAGE =  "Value must be positive";
 
