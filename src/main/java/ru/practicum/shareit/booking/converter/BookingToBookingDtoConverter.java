@@ -4,7 +4,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.dto.BookingDto;
-import ru.practicum.shareit.booking.model.dto.BookingIdAndBookerIdDto;
+import ru.practicum.shareit.booking.model.dto.BookerId;
 import ru.practicum.shareit.item.model.dto.ItemIdAndNameDto;
 
 @Component
@@ -13,9 +13,8 @@ public class BookingToBookingDtoConverter implements Converter<Booking, BookingD
     public BookingDto convert(final Booking source) {
         return BookingDto.builder()
                 .id(source.getId())
-                .booker(BookingIdAndBookerIdDto.builder()
+                .booker(BookerId.builder()
                         .id(source.getBooker().getId())
-                        .bookerId(source.getBooker().getId())
                         .build())
                 .item(ItemIdAndNameDto.builder()
                         .id(source.getItem().getId())

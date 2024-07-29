@@ -1,7 +1,7 @@
 package ru.practicum.shareit.item.model.dto;
 
 import lombok.Builder;
-import ru.practicum.shareit.booking.model.dto.BookingIdAndBookerIdDto;
+import ru.practicum.shareit.booking.model.dto.BookerId;
 import ru.practicum.shareit.item.model.comment.dto.CommentDto;
 
 import java.util.Collection;
@@ -12,8 +12,8 @@ public record ItemWithCommentDto(
         String name,
         String description,
         boolean available,
-        BookingIdAndBookerIdDto lastBooking,
-        BookingIdAndBookerIdDto nextBooking,
+        BookerId lastBooking,
+        BookerId nextBooking,
         Collection<CommentDto> comments
 ) {
 }

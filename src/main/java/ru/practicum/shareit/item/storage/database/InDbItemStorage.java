@@ -108,8 +108,7 @@ public class InDbItemStorage implements ItemStorage {
 
     @Override
     public Collection<Item> findAllByText(final String text) {
-        return itemRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndAvailableIsTrue(text,
-                text);
+        return itemRepository.findByNameContainingIgnoreCaseAndAvailableIsTrue(text);
     }
 
     @Override

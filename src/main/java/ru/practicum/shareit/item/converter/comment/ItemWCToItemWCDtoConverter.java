@@ -2,7 +2,7 @@ package ru.practicum.shareit.item.converter.comment;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import ru.practicum.shareit.booking.model.dto.BookingIdAndBookerIdDto;
+import ru.practicum.shareit.booking.model.dto.BookerId;
 import ru.practicum.shareit.item.model.ItemWithComment;
 import ru.practicum.shareit.item.model.comment.dto.CommentDto;
 import ru.practicum.shareit.item.model.dto.ItemWithCommentDto;
@@ -19,13 +19,11 @@ public class ItemWCToItemWCDtoConverter implements Converter<ItemWithComment, It
                 .name(source.getItem().getName())
                 .description(source.getItem().getDescription())
                 .available(source.getItem().getAvailable())
-                .lastBooking(Objects.isNull(source.getLastBooking()) ? null : BookingIdAndBookerIdDto.builder()
+                .lastBooking(Objects.isNull(source.getLastBooking()) ? null : BookerId.builder()
                         .id(source.getLastBooking().getId())
-                        .bookerId(source.getLastBooking().getBooker().getId())
                         .build())
-                .nextBooking(Objects.isNull(source.getNextBooking()) ? null : BookingIdAndBookerIdDto.builder()
+                .nextBooking(Objects.isNull(source.getNextBooking()) ? null : BookerId.builder()
                         .id(source.getNextBooking().getId())
-                        .bookerId(source.getNextBooking().getBooker().getId())
                         .build())
                 .comments(Objects.isNull(source.getComments()) ? List.of() : source.getComments().stream()
                         .map(comment -> CommentDto.builder()

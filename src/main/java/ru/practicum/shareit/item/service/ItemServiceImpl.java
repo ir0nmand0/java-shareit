@@ -175,13 +175,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private Collection<Item> findItemByTextOrElseThrow(final String text) {
-        Collection<Item> items = itemStorage.findAllByText(text);
-
-        if (items.isEmpty()) {
-            throw new EntityNotFoundException("Item", "Item not found by text " + text);
-        }
-
-        return items;
+        return itemStorage.findAllByText(text);
     }
 
     private void ifDuplicateNameThenThrow(final String name) {

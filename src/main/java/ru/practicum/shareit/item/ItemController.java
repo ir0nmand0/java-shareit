@@ -28,7 +28,7 @@ public class ItemController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public ItemDto create(@RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
                           @Valid @RequestBody final CreateItemDto createItemDto) {
         return itemService.create(createItemDto, userId);

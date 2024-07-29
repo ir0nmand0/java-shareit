@@ -14,7 +14,6 @@ import ru.practicum.shareit.user.model.dto.CreateUserDto;
 import ru.practicum.shareit.user.model.dto.PatchUserDto;
 import ru.practicum.shareit.user.model.dto.UpdateUserDto;
 import ru.practicum.shareit.user.model.dto.UserDto;
-import ru.practicum.shareit.user.storage.InMemoryUserStorage;
 import ru.practicum.shareit.user.storage.UserStorage;
 
 import java.util.Collection;
@@ -28,10 +27,7 @@ public class UserServiceImpl implements UserService {
     private final UserStorage userStorage;
 
     public UserDto create(final CreateUserDto createUserDto) {
-
-        if (userStorage instanceof InMemoryUserStorage) {
-            ifDuplicateThenThrow(createUserDto.email());
-        }
+        ifDuplicateThenThrow(createUserDto.email());
 
         User user = cs.convert(createUserDto, User.class);
 

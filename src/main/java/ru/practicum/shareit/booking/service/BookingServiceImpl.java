@@ -93,7 +93,7 @@ public class BookingServiceImpl implements BookingService {
         }
 
         if (userId != booking.getItem().getUserId()) {
-            throw new EntityNotFoundException(NAME_CLASS,
+            throw new ConditionsNotMetException(NAME_CLASS,
                     "this userId: " + userId + " cannot edit the entry because the tool is not his"
             );
         }

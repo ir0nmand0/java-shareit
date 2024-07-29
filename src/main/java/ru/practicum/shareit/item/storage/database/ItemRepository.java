@@ -19,6 +19,8 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     Collection<Item> findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndAvailableIsTrue(final String name,
                                                                                                        final String description);
 
+    Collection<Item> findByNameContainingIgnoreCaseAndAvailableIsTrue(final String name);
+
     Collection<Item> findByDescription(final String description);
 
     @Modifying
