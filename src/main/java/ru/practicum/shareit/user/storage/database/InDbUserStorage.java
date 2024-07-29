@@ -30,7 +30,7 @@ public class InDbUserStorage implements UserStorage {
     @Transactional
     public void update(final User user) {
         existsByIdOrElseThrow(user.getId());
-        userRepository.saveAndFlush(user);
+        userRepository.save(user);
     }
 
     @Override

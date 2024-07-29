@@ -30,7 +30,7 @@ public class InDbItemStorage implements ItemStorage {
     @Transactional
     public void update(final Item item) {
         existsByIdOrElseThrow(item.getId());
-        itemRepository.saveAndFlush(item);
+        itemRepository.save(item);
     }
 
     @Override
