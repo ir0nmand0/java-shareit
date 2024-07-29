@@ -13,9 +13,6 @@ import ru.practicum.shareit.user.service.UserService;
 
 import java.util.Collection;
 
-/**
- * TODO Sprint add-controllers.
- */
 @RestController
 @RequestMapping(path = "/users")
 @RequiredArgsConstructor
@@ -49,12 +46,12 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public UserDto findById(@PathVariable @Positive(message = ERROR_MESSAGE) final long userId) {
-        return userService.findById(userId);
+        return userService.findOneById(userId);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable @Positive(message = ERROR_MESSAGE) final long userId) {
-        userService.delete(userId);
+        userService.deleteById(userId);
     }
 }

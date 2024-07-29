@@ -10,13 +10,19 @@ public interface UserStorage {
 
     void update(final User user);
 
-    User patch(final User user);
+    void patch(final User user);
 
     Collection<User> findAll();
 
-    Optional<User> findById(final long id);
+    Optional<User> findOneById(final long id);
 
-    Optional<User> findByEmail(final String email);
+    Optional<User> findOneByEmail(final String email);
 
-    void delete(final long id);
+    void deleteById(final long id);
+
+    boolean existsById(final long id);
+
+    void existsByIdOrElseThrow(final long id);
+
+    User findOneByIdOrElseThrow(final long id);
 }

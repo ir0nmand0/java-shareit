@@ -3,7 +3,7 @@ package ru.practicum.shareit.user.storage;
 import org.apache.logging.log4j.util.InternalException;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ObjectUtils;
-import ru.practicum.shareit.exception.EntityNotFoundByIdException;
+import ru.practicum.shareit.exception.EntityNotFoundException;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.Collection;
@@ -25,24 +25,12 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public void update(final User user) {
-        findById(user.getId()).orElseThrow(() -> new EntityNotFoundByIdException("user", "id not found"));
+        existsByIdOrElseThrow(user.getId());
         users.put(user.getId(), user);
     }
 
     @Override
-    public User patch(final User user) {
-        User patchUser = findById(user.getId())
-                .orElseThrow(() -> new EntityNotFoundByIdException("user", "id not found"));
-
-        if (!ObjectUtils.isEmpty(user.getName())) {
-            patchUser.setName(user.getName());
-        }
-
-        if (!ObjectUtils.isEmpty(user.getEmail())) {
-            patchUser.setEmail(user.getEmail());
-        }
-
-        return patchUser;
+    public void patch(final User user) {
     }
 
     @Override
@@ -51,20 +39,37 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public Optional<User> findById(final long id) {
+    public Optional<User> findOneById(final long id) {
         return Optional.ofNullable(users.get(id));
     }
 
     @Override
-    public Optional<User> findByEmail(final String email) {
+    public Optional<User> findOneByEmail(final String email) {
         return findAll().stream()
                 .filter(user -> user.getEmail().equalsIgnoreCase(email))
                 .findFirst();
     }
 
     @Override
-    public void delete(final long id) {
+    public void deleteById(final long id) {
         users.remove(id);
+    }
+
+    @Override
+    public boolean existsById(final long id) {
+        return users.containsKey(id) && !ObjectUtils.isEmpty(users.get(id));
+    }
+
+    @Override
+    public void existsByIdOrElseThrow(final long id) {
+        if (!existsById(id)) {
+            throw new EntityNotFoundException("user", "id not found");
+        }
+    }
+
+    @Override
+    public User findOneByIdOrElseThrow(final long id) {
+        return findOneById(id).orElseThrow(() -> new EntityNotFoundException("user", "id not found"));
     }
 
     private long findFreeId() {

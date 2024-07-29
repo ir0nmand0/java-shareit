@@ -18,9 +18,9 @@ public interface ItemService {
 
     Collection<ItemDto> findAllByUserId(final long userId);
 
-    ItemDto findById(final long id);
+    ItemDto findOneById(final long id);
 
     Collection<ItemDto> findByText(final String text);
 
-    void delete(final long id);
+    void deleteById(final long id);
 }
