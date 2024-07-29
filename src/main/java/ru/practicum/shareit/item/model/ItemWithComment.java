@@ -7,7 +7,9 @@ import ru.practicum.shareit.item.model.comment.Comment;
 import java.util.Collection;
 
 @Builder
-@Getter @Setter @ToString
+@Getter
+@Setter
+@ToString
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class ItemWithComment {
