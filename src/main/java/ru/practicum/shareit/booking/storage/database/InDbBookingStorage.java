@@ -128,7 +128,7 @@ public class InDbBookingStorage implements BookingStorage {
 
     @Override
     public Optional<Booking> findOneById(final long id, final long userId) {
-        return bookingRepository.findOneByIdAndBookerIdOrItemUserId(id, userId);
+        return bookingRepository.findOneByIdAndUserId(id, userId);
     }
 
     @Override

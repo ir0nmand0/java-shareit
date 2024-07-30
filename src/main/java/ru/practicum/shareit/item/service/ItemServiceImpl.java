@@ -128,9 +128,7 @@ public class ItemServiceImpl implements ItemService {
             itemInStorage.setAvailable(patchItemDto.available());
         }
 
-        itemStorage.patch(itemInStorage);
-
-        return cs.convert(itemInStorage, ItemDto.class);
+        return cs.convert(itemStorage.save(itemInStorage), ItemDto.class);
     }
 
     @Override

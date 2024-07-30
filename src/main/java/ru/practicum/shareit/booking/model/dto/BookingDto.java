@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Builder
 public record BookingDto(
         long id,
-        BookerId booker,
+        BookerIdDto booker,
         ItemIdAndNameDto item,
         LocalDateTime start,
         LocalDateTime end,

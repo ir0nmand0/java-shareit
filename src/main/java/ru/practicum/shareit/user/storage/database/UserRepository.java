@@ -11,17 +11,17 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(final String email);
 
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("update User u set u.name = :name, u.email = :email where u.id = :id")
     void updateNameAndEmail(@Param("name") final String name,
                                       @Param("email") final String email,
                                       @Param("id") final long id);
 
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("update User u set u.name = :name where u.id = :id")
     void updateName(@Param("name") final String name, @Param("id") final long id);
 
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("update User u set u.email = :email where u.id = :id")
     void updateEmail(@Param("email") final String email, @Param("id") final long id);
 }

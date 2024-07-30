@@ -76,9 +76,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setBooker(booker);
         booking.setItem(item);
 
-        bookingStorage.patch(booking);
-
-        return cs.convert(booking, BookingDto.class);
+        return cs.convert(bookingStorage.save(booking), BookingDto.class);
     }
 
     @Override
@@ -100,14 +98,7 @@ public class BookingServiceImpl implements BookingService {
 
         booking.setStatus(status);
 
-        bookingStorage.patch(Booking.builder()
-                .id(booking.getId())
-                .booker(booking.getBooker())
-                .item(booking.getItem())
-                .status(status)
-                .build());
-
-        return cs.convert(booking, BookingDto.class);
+        return cs.convert(bookingStorage.save(booking), BookingDto.class);
     }
 
     @Override

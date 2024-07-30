@@ -57,9 +57,7 @@ public class UserServiceImpl implements UserService {
             userInStorage.setEmail(patchUserDto.email());
         }
 
-        userStorage.patch(userInStorage);
-
-        return cs.convert(findByIdOrElseThrow(userId), UserDto.class);
+        return cs.convert(userStorage.save(userInStorage), UserDto.class);
     }
 
     public UserDto update(final UpdateUserDto updateUserDto) {

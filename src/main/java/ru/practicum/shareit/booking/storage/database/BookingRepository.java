@@ -16,11 +16,11 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     @Query("select b from Booking b where b.id = :id and (b.booker.id = :userId or b.item.userId = :userId) "
             + "order by b.id")
-    Optional<Booking> findOneByIdAndBookerIdOrItemUserId(final long id, final long userId);
+    Optional<Booking> findOneByIdAndUserId(final long id, final long userId);
 
     Collection<Booking> findAllByBookerIdOrderByIdDesc(final long id);
 
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query(value = "update bookings b set b.start_time = :#{#start.toString()}, "
             + "b.end_time = :#{#end.toString()}, b.status = :#{#status.name()} "
             + "where b.id = :id and b.item_id = :itemId and b.booker_id = :userId", nativeQuery = true)
@@ -31,7 +31,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
                                     @Param("itemId") final long itemId,
                                     @Param("userId") final long userId);
 
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query(value = "update bookings b set b.start_time = :#{#start.toString()}, b.end_time = :#{#end.toString()} "
             + "where b.id = :id and b.item_id = :itemId and b.booker_id = :userId", nativeQuery = true)
     void updateStartAndEnd(@Param("start") final LocalDateTime start,
@@ -40,7 +40,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
                            @Param("itemId") final long itemId,
                            @Param("userId") final long userId);
 
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query(value = "update bookings b set b.start_time = :#{#start.toString()}, b.status = :#{#status.name()} "
             + "where b.id = :id and b.item_id = :itemId and b.booker_id = :userId", nativeQuery = true)
     void updateStartAndStatus(@Param("start") final LocalDateTime start,
@@ -49,7 +49,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
                               @Param("itemId") final long itemId,
                               @Param("userId") final long userId);
 
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query(value = "update bookings b set b.end_time = :#{#end.toString()}, b.status = :#{#status.name()} "
             + "where b.id = :id and b.item_id = :itemId and b.booker_id = :userId", nativeQuery = true)
     void updateEndAndStatus(@Param("end") final LocalDateTime end,
@@ -58,7 +58,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
                             @Param("itemId") final long itemId,
                             @Param("userId") final long userId);
 
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query(value = "update bookings b set b.start_time = :#{#start.toString()} "
             + "where b.id = :id and b.item_id = :itemId and b.booker_id = :userId", nativeQuery = true)
     void updateStart(@Param("start") final LocalDateTime start,
@@ -66,7 +66,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
                      @Param("itemId") final long itemId,
                      @Param("userId") final long userId);
 
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query(value = "update bookings b set b.end_time = :#{#end.toString()} "
             + "where b.id = :id and b.item_id = :itemId and b.booker_id = :userId", nativeQuery = true)
     void updateEnd(@Param("end") final LocalDateTime end,
@@ -74,7 +74,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
                    @Param("itemId") final long itemId,
                    @Param("userId") final long userId);
 
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query(value = "update bookings b set b.status = :#{#status.name()} "
             + "where b.id = :id and b.item_id = :itemId and b.booker_id = :userId", nativeQuery = true)
     void updateStatus(@Param("status") final BookingStatus status,
