@@ -16,7 +16,7 @@ public interface UserService {
 
     Collection<UserDto> findAll();
 
-    UserDto findById(final long id);
+    UserDto findOneById(final long id);
 
-    void delete(final long id);
+    void deleteById(final long id);
 }

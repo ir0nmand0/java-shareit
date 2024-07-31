@@ -3,13 +3,16 @@ package ru.practicum.shareit.user.model.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 public record UpdateUserDto(
-        @Positive(message = "Value must be positive")
+        @Positive
         long id,
-        @NotBlank(message = "Value can`t be empty or null")
-        @Email(message = "Value must contains character @")
+        @Size(max = 320)
+        @NotBlank
+        @Email
         String email,
-        @NotBlank(message = "Value can`t be empty or null")
+        @Size(max = 255)
+        @NotBlank
         String name) {
 }

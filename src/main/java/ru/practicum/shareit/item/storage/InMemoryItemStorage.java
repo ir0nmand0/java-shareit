@@ -3,7 +3,8 @@ package ru.practicum.shareit.item.storage;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ObjectUtils;
-import ru.practicum.shareit.exception.EntityNotFoundByIdException;
+import ru.practicum.shareit.exception.ConditionsNotMetException;
+import ru.practicum.shareit.exception.EntityNotFoundException;
 import ru.practicum.shareit.item.model.Item;
 
 import java.util.Collection;
@@ -25,28 +26,12 @@ public class InMemoryItemStorage implements ItemStorage {
 
     @Override
     public void update(final Item item) {
-        findById(item.getId()).orElseThrow(() -> new EntityNotFoundByIdException("item", "id not found"));
+        existsByIdOrElseThrow(item.getId());
         items.put(item.getId(), item);
     }
 
     @Override
-    public Item patch(final Item item) {
-        Item patchItem = findById(item.getId())
-                .orElseThrow(() -> new EntityNotFoundByIdException("item", "id not found"));
-
-        if (!ObjectUtils.isEmpty(item.getName())) {
-            patchItem.setName(item.getName());
-        }
-
-        if (!ObjectUtils.isEmpty(item.getDescription())) {
-            patchItem.setDescription(item.getDescription());
-        }
-
-        if (!ObjectUtils.isEmpty(item.getAvailable())) {
-            patchItem.setAvailable(item.getAvailable());
-        }
-
-        return patchItem;
+    public void patch(final Item item) {
     }
 
     @Override
@@ -55,12 +40,12 @@ public class InMemoryItemStorage implements ItemStorage {
     }
 
     @Override
-    public Optional<Item> findById(final long id) {
+    public Optional<Item> findOneById(final long id) {
         return Optional.ofNullable(items.get(id));
     }
 
     @Override
-    public Collection<Item> findByName(@NotBlank final String name) {
+    public Collection<Item> findAllByName(@NotBlank final String name) {
         return findAll().stream()
                 .filter(item -> {
                             if (ObjectUtils.isEmpty(item.getName()) || !isAvailable(item.getAvailable())) {
@@ -80,7 +65,7 @@ public class InMemoryItemStorage implements ItemStorage {
     }
 
     @Override
-    public Collection<Item> findByText(@NotBlank final String text) {
+    public Collection<Item> findAllByText(@NotBlank final String text) {
         final String toLowerCaseTest = text.toLowerCase();
 
         return findAll().stream()
@@ -100,7 +85,7 @@ public class InMemoryItemStorage implements ItemStorage {
     }
 
     @Override
-    public Collection<Item> findByDescription(@NotBlank final String description) {
+    public Collection<Item> findAllByDescription(@NotBlank final String description) {
         return findAll().stream()
                 .filter(item -> {
                             if (ObjectUtils.isEmpty(item.getDescription()) || !isAvailable(item.getAvailable())) {
@@ -118,7 +103,40 @@ public class InMemoryItemStorage implements ItemStorage {
         items.remove(id);
     }
 
+    @Override
+    public Item findOneByIdOrElseThrow(final long id) {
+        return findOneById(id).orElseThrow(() -> new EntityNotFoundException("item", "id not found"));
+    }
+
+    @Override
+    public boolean existsById(final long id) {
+        return items.containsKey(id) && !ObjectUtils.isEmpty(items.get(id));
+    }
+
+    @Override
+    public boolean existsByIdAndAvailableIsTrue(final long id) {
+        return existsById(id) && items.get(id).getAvailable();
+    }
+
+    @Override
+    public void existsByIdAndAvailableIsTrueOrElseThrow(final long id) {
+        Item item = findOneByIdOrElseThrow(id);
+
+        if (item.getAvailable()) {
+            return;
+        }
+
+        throw new ConditionsNotMetException("item", "not allowed");
+    }
+
     private boolean isAvailable(final Boolean available) {
         return Objects.nonNull(available) && available;
+    }
+
+    @Override
+    public void existsByIdOrElseThrow(final long id) {
+        if (!existsById(id)) {
+            throw new EntityNotFoundException("item", "id not found");
+        }
     }
 }

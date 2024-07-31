@@ -10,19 +10,29 @@ public interface ItemStorage {
 
     void update(final Item item);
 
-    Item patch(final Item item);
+    void patch(final Item item);
 
     Collection<Item> findAll();
 
-    Optional<Item> findById(final long id);
+    Optional<Item> findOneById(final long id);
 
     Collection<Item> findAllByUserId(final long userId);
 
-    Collection<Item> findByName(final String name);
+    Collection<Item> findAllByName(final String name);
 
-    Collection<Item> findByText(final String text);
+    Collection<Item> findAllByText(final String text);
 
-    Collection<Item> findByDescription(final String description);
+    Collection<Item> findAllByDescription(final String description);
 
     void delete(final long id);
+
+    Item findOneByIdOrElseThrow(final long id);
+
+    boolean existsById(final long id);
+
+    boolean existsByIdAndAvailableIsTrue(final long id);
+
+    void existsByIdAndAvailableIsTrueOrElseThrow(long id);
+
+    void existsByIdOrElseThrow(long id);
 }

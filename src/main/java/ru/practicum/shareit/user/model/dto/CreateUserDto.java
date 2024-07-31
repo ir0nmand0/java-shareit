@@ -2,11 +2,14 @@ package ru.practicum.shareit.user.model.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public record CreateUserDto(
-        @NotBlank(message = "Value can`t be empty or null")
-        @Email(message = "Value must contains character @")
+        @Size(max = 320)
+        @NotBlank
+        @Email
         String email,
-        @NotBlank(message = "Value can`t be empty or null")
+        @Size(max = 255)
+        @NotBlank
         String name) {
 }

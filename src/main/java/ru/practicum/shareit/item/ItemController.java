@@ -6,35 +6,29 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.exception.ConditionsNotMetException;
-import ru.practicum.shareit.item.model.dto.CreateItemDto;
-import ru.practicum.shareit.item.model.dto.ItemDto;
-import ru.practicum.shareit.item.model.dto.PatchItemDto;
-import ru.practicum.shareit.item.model.dto.UpdateItemDto;
+import ru.practicum.shareit.item.model.comment.dto.CommentDto;
+import ru.practicum.shareit.item.model.comment.dto.CreateCommentDto;
+import ru.practicum.shareit.item.model.dto.*;
+import ru.practicum.shareit.item.service.CommentService;
 import ru.practicum.shareit.item.service.ItemService;
 
 import java.util.Collection;
 
-/**
- * TODO Sprint add-controllers.
- */
 @RestController
 @RequestMapping("/items")
 @RequiredArgsConstructor
 public class ItemController {
     private final ItemService itemService;
+    private final CommentService commentService;
     private static final String X_SHARER_USER_ID = "X-Sharer-User-Id";
 
     @GetMapping
-    public Collection<ItemDto> findAll(@RequestHeader(X_SHARER_USER_ID) @Positive final long userId) {
-        if (userId <= 0) {
-            return itemService.findAll();
-        }
-
-        return itemService.findAllByUserId(userId);
+    public Collection<ItemWithCommentDto> findAllByUserId(@RequestHeader(X_SHARER_USER_ID) @Positive final long userId) {
+        return commentService.findAllByUserId(userId);
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public ItemDto create(@RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
                           @Valid @RequestBody final CreateItemDto createItemDto) {
         return itemService.create(createItemDto, userId);
@@ -62,12 +56,20 @@ public class ItemController {
     }
 
     @GetMapping("/{itemId}")
-    public ItemDto findById(@PathVariable @Positive(message = "Value must be positive") final long itemId) {
-        return itemService.findById(itemId);
+    public ItemWithCommentDto findOneById(@PathVariable @Positive final long itemId,
+                                          @RequestHeader(X_SHARER_USER_ID) @Positive final long userId) {
+        return commentService.findOneByItemIdAndUserId(itemId, userId);
     }
 
     @GetMapping("/search")
-    public Collection<ItemDto> findByText(@RequestParam final String text) {
+    public Collection<ItemDto> findAllByText(@RequestParam final String text) {
         return itemService.findByText(text);
+    }
+
+    @PostMapping("/{itemId}/comment")
+    public CommentDto createComment(@PathVariable @Positive final long itemId,
+                                    @RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
+                                    @Valid @RequestBody final CreateCommentDto createCommentDto) {
+        return commentService.create(createCommentDto, itemId, userId);
     }
 }

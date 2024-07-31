@@ -1,26 +1,24 @@
 package ru.practicum.shareit.item.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import ru.practicum.shareit.exception.ConditionsNotMetException;
 import ru.practicum.shareit.exception.EntityDuplicateException;
-import ru.practicum.shareit.exception.EntityNotFoundByIdException;
+import ru.practicum.shareit.exception.EntityNotFoundException;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.model.dto.CreateItemDto;
 import ru.practicum.shareit.item.model.dto.ItemDto;
 import ru.practicum.shareit.item.model.dto.PatchItemDto;
 import ru.practicum.shareit.item.model.dto.UpdateItemDto;
 import ru.practicum.shareit.item.storage.ItemStorage;
-import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.storage.UserStorage;
 
 import java.util.Collection;
 import java.util.List;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
@@ -31,7 +29,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto create(final CreateItemDto createItemDto, final long userId) {
-        findUserByIdOrElseThrow(userId);
+        userStorage.existsByIdOrElseThrow(userId);
 
         Item item = cs.convert(createItemDto, Item.class);
         item.setUserId(userId);
@@ -57,9 +55,13 @@ public class ItemServiceImpl implements ItemService {
             item = findItemByIdOrElseThrow(updateItemDto.id());
         }
 
+        if (item == null) {
+            throw new EntityNotFoundException("Item", "Item with id: " + itemId + " not found");
+        }
+
         checkCreatorOfTheItem(userId, item.getUserId());
 
-        findUserByIdOrElseThrow(userId);
+        userStorage.existsByIdOrElseThrow(userId);
 
         Item newItem = cs.convert(updateItemDto, Item.class);
 
@@ -73,26 +75,60 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto patch(final PatchItemDto patchItemDto, final long itemId, final long userId) {
-        Item item = null;
+        userStorage.existsByIdOrElseThrow(userId);
+
+        Item itemInStorage = null;
 
         if (patchItemDto.id() <= 0) {
-            item = findItemByIdOrElseThrow(itemId);
+            itemInStorage = findItemByIdOrElseThrow(itemId);
         } else {
-            item = findItemByIdOrElseThrow(patchItemDto.id());
+            itemInStorage = findItemByIdOrElseThrow(patchItemDto.id());
         }
 
-        checkCreatorOfTheItem(userId, item.getUserId());
+        checkCreatorOfTheItem(userId, itemInStorage.getUserId());
 
-        findUserByIdOrElseThrow(userId);
+        final boolean nameIsEmpty = ObjectUtils.isEmpty(patchItemDto.name());
+        final boolean descriptionIsEmpty = ObjectUtils.isEmpty(patchItemDto.description());
+        final boolean availableIsEmpty = ObjectUtils.isEmpty(patchItemDto.available());
 
-        Item newItem = cs.convert(patchItemDto, Item.class);
-
-        if (newItem.getId() == 0) {
-            newItem.setId(itemId);
+        if (nameIsEmpty && descriptionIsEmpty && availableIsEmpty) {
+            throw new ConditionsNotMetException("item", "name, description or availableIsEmpty fields cannot be empty");
         }
 
-        Item patchItem = itemStorage.patch(newItem);
-        return cs.convert(patchItem, ItemDto.class);
+        if (!nameIsEmpty && !descriptionIsEmpty && !availableIsEmpty) {
+            itemInStorage.setName(patchItemDto.name());
+            itemInStorage.setDescription(patchItemDto.description());
+            itemInStorage.setAvailable(patchItemDto.available());
+        }
+
+        if (!nameIsEmpty && !descriptionIsEmpty && availableIsEmpty) {
+            itemInStorage.setName(patchItemDto.name());
+            itemInStorage.setDescription(patchItemDto.description());
+        }
+
+        if (!nameIsEmpty && descriptionIsEmpty && !availableIsEmpty) {
+            itemInStorage.setName(patchItemDto.name());
+            itemInStorage.setAvailable(patchItemDto.available());
+        }
+
+        if (nameIsEmpty && !descriptionIsEmpty && !availableIsEmpty) {
+            itemInStorage.setDescription(patchItemDto.description());
+            itemInStorage.setAvailable(patchItemDto.available());
+        }
+
+        if (!nameIsEmpty && descriptionIsEmpty && availableIsEmpty) {
+            itemInStorage.setName(patchItemDto.name());
+        }
+
+        if (nameIsEmpty && !descriptionIsEmpty && availableIsEmpty) {
+            itemInStorage.setDescription(patchItemDto.description());
+        }
+
+        if (nameIsEmpty && descriptionIsEmpty && !availableIsEmpty) {
+            itemInStorage.setAvailable(patchItemDto.available());
+        }
+
+        return cs.convert(itemStorage.save(itemInStorage), ItemDto.class);
     }
 
     @Override
@@ -103,7 +139,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDto findById(final long id) {
+    public ItemDto findOneById(final long id) {
         return cs.convert(findItemByIdOrElseThrow(id), ItemDto.class);
     }
 
@@ -119,62 +155,38 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void delete(final long id) {
+    public void deleteById(final long id) {
         itemStorage.delete(id);
     }
 
     private Item findItemByIdOrElseThrow(final long id) {
-        return itemStorage.findById(id).orElseThrow(() -> {
-            final String message = "Item not found by id " + id;
-            log.warn(message);
-            throw new EntityNotFoundByIdException("Item", message);
-        });
+        return itemStorage.findOneById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Item", "Item not found by id " + id));
     }
 
     private void checkCreatorOfTheItem(final long userId, final long correctUserId) {
         if (userId != correctUserId) {
-            final String message = "this userId: " + userId + " cannot edit the entry because the tool is not his";
-            log.warn(message);
-            throw new EntityNotFoundByIdException("Item", message);
+            throw new EntityNotFoundException("Item",
+                    "this userId: " + userId + " cannot edit the entry because the tool is not his"
+            );
         }
-    }
-
-    private User findUserByIdOrElseThrow(final long id) {
-        return userStorage.findById(id).orElseThrow(() -> {
-            final String message = "User not found by id " + id;
-            log.warn(message);
-            throw new EntityNotFoundByIdException("User", message);
-        });
     }
 
     private Collection<Item> findItemByTextOrElseThrow(final String text) {
-        Collection<Item> items = itemStorage.findByText(text);
-
-        if (items.isEmpty()) {
-            final String message = "Item not found by text " + text;
-            log.warn(message);
-
-            throw new EntityNotFoundByIdException("Item", message);
-        }
-
-        return items;
+        return itemStorage.findAllByText(text);
     }
 
     private void ifDuplicateNameThenThrow(final String name) {
-        if (!itemStorage.findByName(name).isEmpty()) {
-            final String message = "There is already a item with this name " + name;
-            log.warn(message);
-
-            throw new EntityDuplicateException("name", message);
+        if (!itemStorage.findAllByName(name).isEmpty()) {
+            throw new EntityDuplicateException("name", "There is already a item with this name " + name);
         }
     }
 
     private void ifDuplicateDescriptionThenThrow(final String description) {
-        if (!itemStorage.findByDescription(description).isEmpty()) {
-            final String message = "There is already a item with this description " + description;
-            log.warn(message);
-
-            throw new EntityDuplicateException("description", message);
+        if (!itemStorage.findAllByDescription(description).isEmpty()) {
+            throw new EntityDuplicateException("description",
+                    "There is already a item with this description " + description
+            );
         }
     }
 }
