@@ -43,7 +43,7 @@ class UserServiceImplIntegrationTest {
 
     @Test
     void createUserDuplicateEmailIsFail() {
-        CreateUserDto createUserDto1 = new CreateUserDto("test2@ya.ru","test2");
+        CreateUserDto createUserDto1 = new CreateUserDto("test2@ya.ru", "test2");
         userService.create(createUserDto1);
 
         CreateUserDto createUserDto2 = new CreateUserDto("test2@ya.ru", "test2");

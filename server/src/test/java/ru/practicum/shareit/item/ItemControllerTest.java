@@ -82,9 +82,9 @@ class ItemControllerTest {
         when(itemService.create(any(CreateItemDto.class), anyLong())).thenReturn(itemDto);
 
         mockMvc.perform(post("/items")
-                .header("X-Sharer-User-Id", 1L)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(createItemDto)))
+                        .header("X-Sharer-User-Id", 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createItemDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(itemDto.id()))
                 .andExpect(jsonPath("$.name").value(itemDto.name()))
@@ -97,7 +97,7 @@ class ItemControllerTest {
         when(commentService.findOneByItemIdAndUserId(anyLong(), anyLong())).thenReturn(itemWithCommentDto);
 
         mockMvc.perform(get("/items/{itemId}", 1L)
-                .header("X-Sharer-User-Id", 1L))
+                        .header("X-Sharer-User-Id", 1L))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(itemWithCommentDto.id()))
                 .andExpect(jsonPath("$.name").value(itemWithCommentDto.name()))
@@ -110,7 +110,7 @@ class ItemControllerTest {
         when(commentService.findAllByUserId(anyLong())).thenReturn(List.of(itemWithCommentDto));
 
         mockMvc.perform(get("/items")
-                .header("X-Sharer-User-Id", 1L))
+                        .header("X-Sharer-User-Id", 1L))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(itemWithCommentDto.id()))
                 .andExpect(jsonPath("$[0].name").value(itemWithCommentDto.name()))
@@ -123,9 +123,9 @@ class ItemControllerTest {
         when(commentService.create(any(CreateCommentDto.class), anyLong(), anyLong())).thenReturn(commentDto);
 
         mockMvc.perform(post("/items/{itemId}/comment", 1L)
-                .header("X-Sharer-User-Id", 1L)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(createCommentDto)))
+                        .header("X-Sharer-User-Id", 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createCommentDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(commentDto.id()))
                 .andExpect(jsonPath("$.text").value(commentDto.text()))

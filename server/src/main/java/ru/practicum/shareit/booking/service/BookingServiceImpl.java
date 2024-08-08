@@ -176,7 +176,7 @@ public class BookingServiceImpl implements BookingService {
 
         throw new EntityNotFoundException(NAME_CLASS,
                 "this instrument with id : " + item.getId() + " cannot be rented, because userId: "
-                + userId + " is owner");
+                        + userId + " is owner");
     }
 
     private void checkTime(final LocalDateTime start, final LocalDateTime end) {

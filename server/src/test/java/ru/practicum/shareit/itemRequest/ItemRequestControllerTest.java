@@ -49,9 +49,9 @@ class ItemRequestControllerTest {
         when(itemRequestService.create(any(CreateItemRequestDto.class), anyLong())).thenReturn(itemRequestDto);
 
         mockMvc.perform(post("/requests")
-                .header("X-Sharer-User-Id", 1L)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(createItemRequestDto)))
+                        .header("X-Sharer-User-Id", 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createItemRequestDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(itemRequestDto.id()))
                 .andExpect(jsonPath("$.description").value(itemRequestDto.description()));
@@ -62,7 +62,7 @@ class ItemRequestControllerTest {
         when(itemRequestService.findAllByUserId(anyLong())).thenReturn(List.of(itemRequestDto));
 
         mockMvc.perform(get("/requests")
-                .header("X-Sharer-User-Id", 1L))
+                        .header("X-Sharer-User-Id", 1L))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(itemRequestDto.id()))
                 .andExpect(jsonPath("$[0].description").value(itemRequestDto.description()));

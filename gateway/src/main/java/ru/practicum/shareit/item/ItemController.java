@@ -31,15 +31,15 @@ public class ItemController {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> create(@RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
-                          @Valid @RequestBody final CreateItemDto createItemDto) {
+                                         @Valid @RequestBody final CreateItemDto createItemDto) {
         return itemClient.create(createItemDto, userId);
     }
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> update(@PathVariable final long itemId,
-                          @RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
-                          @Valid @RequestBody final UpdateItemDto updateItemDto) {
+                                         @RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
+                                         @Valid @RequestBody final UpdateItemDto updateItemDto) {
 
         if (itemId <= 0 && updateItemDto.id() <= 0) {
             throw new ConditionsNotMetException("Item", "Id: " + itemId);
@@ -51,14 +51,14 @@ public class ItemController {
     @PatchMapping("/{itemId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> patch(@PathVariable final long itemId,
-                         @RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
-                         @Valid @RequestBody final PatchItemDto patchItemDto) {
+                                        @RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
+                                        @Valid @RequestBody final PatchItemDto patchItemDto) {
         return itemClient.patch(patchItemDto, itemId, userId);
     }
 
     @GetMapping("/{itemId}")
     public ResponseEntity<Object> findOneById(@PathVariable @Positive final long itemId,
-                                          @RequestHeader(X_SHARER_USER_ID) @Positive final long userId) {
+                                              @RequestHeader(X_SHARER_USER_ID) @Positive final long userId) {
         return itemClient.findOneByItemIdAndUserId(itemId, userId);
     }
 
@@ -69,8 +69,8 @@ public class ItemController {
 
     @PostMapping("/{itemId}/comment")
     public ResponseEntity<Object> createComment(@PathVariable @Positive final long itemId,
-                                    @RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
-                                    @Valid @RequestBody final CreateCommentDto createCommentDto) {
+                                                @RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
+                                                @Valid @RequestBody final CreateCommentDto createCommentDto) {
         return itemClient.createComment(createCommentDto, itemId, userId);
     }
 }

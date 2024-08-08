@@ -48,7 +48,7 @@ class UserDtoSerializationTests {
 
     @Test
     void updateUserDtoSerialization() throws Exception {
-        UpdateUserDto updateUserDto = new UpdateUserDto(1L,"test2@ya.ru", "test2");
+        UpdateUserDto updateUserDto = new UpdateUserDto(1L, "test2@ya.ru", "test2");
 
         JsonContent<UpdateUserDto> jsonContent = updateUserDtoJson.write(updateUserDto);
 

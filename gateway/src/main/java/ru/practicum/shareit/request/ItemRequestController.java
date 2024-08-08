@@ -22,14 +22,14 @@ public class ItemRequestController {
 
     @GetMapping("/{requestId}")
     public ResponseEntity<Object> findOneById(@RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
-                                                           @PathVariable @Positive final long requestId) {
+                                              @PathVariable @Positive final long requestId) {
         return itemRequestClient.findOneById(userId, requestId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> create(@RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
-                          @Valid @RequestBody final CreateItemRequestDto createItemRequestDto) {
+                                         @Valid @RequestBody final CreateItemRequestDto createItemRequestDto) {
         return itemRequestClient.create(createItemRequestDto, userId);
     }
 

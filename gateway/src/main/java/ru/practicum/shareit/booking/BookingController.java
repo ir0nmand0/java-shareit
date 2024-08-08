@@ -35,14 +35,14 @@ public class BookingController {
 
     @PostMapping
     public ResponseEntity<Object> create(@RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
-                             @Valid @RequestBody final CreateBookingDto createBookingDto) {
+                                         @Valid @RequestBody final CreateBookingDto createBookingDto) {
         return bookingClient.create(createBookingDto, userId);
     }
 
     @PatchMapping("/{bookingId}")
     public ResponseEntity<Object> updateStatus(@PathVariable @Positive long bookingId,
-                                   @RequestParam boolean approved,
-                                   @RequestHeader(X_SHARER_USER_ID) @Positive final long userId) {
+                                               @RequestParam boolean approved,
+                                               @RequestHeader(X_SHARER_USER_ID) @Positive final long userId) {
 
         return bookingClient.updateBookingStatus(bookingId, approved, userId);
     }

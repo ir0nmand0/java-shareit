@@ -116,7 +116,7 @@ class ItemServiceImplIntegrationTest {
                 .build();
 
         assertThrows(EntityNotFoundException.class, () -> {
-            itemService.update(updateItemDto,Long.MAX_VALUE, user.getId());
+            itemService.update(updateItemDto, Long.MAX_VALUE, user.getId());
         });
     }
 

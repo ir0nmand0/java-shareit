@@ -30,7 +30,7 @@ public class ItemController {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public ItemDto create(@RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
-                           @RequestBody final CreateItemDto createItemDto) {
+                          @RequestBody final CreateItemDto createItemDto) {
         return itemService.create(createItemDto, userId);
     }
 
@@ -38,7 +38,7 @@ public class ItemController {
     @ResponseStatus(HttpStatus.OK)
     public ItemDto update(@PathVariable final long itemId,
                           @RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
-                           @RequestBody final UpdateItemDto updateItemDto) {
+                          @RequestBody final UpdateItemDto updateItemDto) {
 
         if (itemId <= 0 && updateItemDto.id() <= 0) {
             throw new ConditionsNotMetException("Item", "Id: " + itemId);
@@ -51,7 +51,7 @@ public class ItemController {
     @ResponseStatus(HttpStatus.OK)
     public ItemDto patch(@PathVariable final long itemId,
                          @RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
-                          @RequestBody final PatchItemDto patchItemDto) {
+                         @RequestBody final PatchItemDto patchItemDto) {
         return itemService.patch(patchItemDto, itemId, userId);
     }
 
@@ -69,7 +69,7 @@ public class ItemController {
     @PostMapping("/{itemId}/comment")
     public CommentDto createComment(@PathVariable @Positive final long itemId,
                                     @RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
-                                     @RequestBody final CreateCommentDto createCommentDto) {
+                                    @RequestBody final CreateCommentDto createCommentDto) {
         return commentService.create(createCommentDto, itemId, userId);
     }
 }

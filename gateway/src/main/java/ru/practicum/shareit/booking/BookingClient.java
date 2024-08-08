@@ -51,6 +51,6 @@ public class BookingClient extends BaseClient {
     }
 
     public ResponseEntity<Object> updateBookingStatus(final long bookingId, final boolean approved, final long userId) {
-        return patch(String.format("/%d?approved=%b",bookingId, approved), userId, null, null);
+        return patch(String.format("/%d?approved=%b", bookingId, approved), userId, null, null);
     }
 }

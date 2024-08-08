@@ -1,6 +1,5 @@
 package ru.practicum.shareit.user;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +17,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    private static final String ERROR_MESSAGE =  "Value must be positive";
+    private static final String ERROR_MESSAGE = "Value must be positive";
 
     @GetMapping
     public Collection<UserDto> findAll() {
@@ -27,20 +26,20 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public UserDto create( @RequestBody final CreateUserDto createUserDto) {
+    public UserDto create(@RequestBody final CreateUserDto createUserDto) {
         return userService.create(createUserDto);
     }
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public UserDto update( @RequestBody final UpdateUserDto updateUserDto) {
+    public UserDto update(@RequestBody final UpdateUserDto updateUserDto) {
         return userService.update(updateUserDto);
     }
 
     @PatchMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public UserDto patch(@PathVariable @Positive(message = ERROR_MESSAGE) final long userId,
-                          @RequestBody PatchUserDto patchUserDto) {
+                         @RequestBody PatchUserDto patchUserDto) {
         return userService.patch(patchUserDto, userId);
     }
 

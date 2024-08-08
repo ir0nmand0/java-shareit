@@ -26,14 +26,14 @@ public class ItemRequestController {
 
     @GetMapping("/{requestId}")
     public ItemRequestWithItemsDto findOneById(@RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
-                                                           @PathVariable @Positive final long requestId) {
+                                               @PathVariable @Positive final long requestId) {
         return itemRequestService.findOneById(userId, requestId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public ItemRequestDto create(@RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
-                           @RequestBody final CreateItemRequestDto createItemRequestDto) {
+                                 @RequestBody final CreateItemRequestDto createItemRequestDto) {
         return itemRequestService.create(createItemRequestDto, userId);
     }
 
