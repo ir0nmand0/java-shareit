@@ -33,7 +33,7 @@ public class ItemRequestController {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public ItemRequestDto create(@RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
-                          @Valid @RequestBody final CreateItemRequestDto createItemRequestDto) {
+                           @RequestBody final CreateItemRequestDto createItemRequestDto) {
         return itemRequestService.create(createItemRequestDto, userId);
     }
 

@@ -7,6 +7,10 @@ logging:
                     jpa.JpaTransactionManager: DEBUG
                 transaction: INFO
                 transaction.interceptor: TRACE
+server:
+    error:
+        include-message: always
+    port: 9090
 spring:
     config:
         activate:

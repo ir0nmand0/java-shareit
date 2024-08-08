@@ -27,20 +27,20 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public UserDto create(@Valid @RequestBody final CreateUserDto createUserDto) {
+    public UserDto create( @RequestBody final CreateUserDto createUserDto) {
         return userService.create(createUserDto);
     }
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public UserDto update(@Valid @RequestBody final UpdateUserDto updateUserDto) {
+    public UserDto update( @RequestBody final UpdateUserDto updateUserDto) {
         return userService.update(updateUserDto);
     }
 
     @PatchMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public UserDto patch(@PathVariable @Positive(message = ERROR_MESSAGE) final long userId,
-                         @Valid @RequestBody PatchUserDto patchUserDto) {
+                          @RequestBody PatchUserDto patchUserDto) {
         return userService.patch(patchUserDto, userId);
     }
 
