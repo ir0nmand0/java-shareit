@@ -15,7 +15,6 @@ import ru.practicum.shareit.user.model.dto.UpdateUserDto;
 @RequiredArgsConstructor
 public class UserController {
     private final UserClient userClient;
-    private static final String ERROR_MESSAGE = "Value must be positive";
 
     @GetMapping
     public ResponseEntity<Object> findAll() {
@@ -36,19 +35,19 @@ public class UserController {
 
     @PatchMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> patch(@PathVariable @Positive(message = ERROR_MESSAGE) final long userId,
+    public ResponseEntity<Object> patch(@PathVariable @Positive final long userId,
                                         @Valid @RequestBody PatchUserDto patchUserDto) {
         return userClient.patch(patchUserDto, userId);
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<Object> findById(@PathVariable @Positive(message = ERROR_MESSAGE) final long userId) {
+    public ResponseEntity<Object> findById(@PathVariable @Positive final long userId) {
         return userClient.findOneById(userId);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{userId}")
-    public void deleteUser(@PathVariable @Positive(message = ERROR_MESSAGE) final long userId) {
+    public void deleteUser(@PathVariable @Positive final long userId) {
         userClient.deleteById(userId);
     }
 }

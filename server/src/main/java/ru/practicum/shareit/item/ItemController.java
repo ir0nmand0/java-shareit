@@ -22,13 +22,13 @@ public class ItemController {
     private static final String X_SHARER_USER_ID = "X-Sharer-User-Id";
 
     @GetMapping
-    public Collection<ItemWithCommentDto> findAllByUserId(@RequestHeader(X_SHARER_USER_ID) @Positive final long userId) {
+    public Collection<ItemWithCommentDto> findAllByUserId(@RequestHeader(X_SHARER_USER_ID) final long userId) {
         return commentService.findAllByUserId(userId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public ItemDto create(@RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
+    public ItemDto create(@RequestHeader(X_SHARER_USER_ID) final long userId,
                           @RequestBody final CreateItemDto createItemDto) {
         return itemService.create(createItemDto, userId);
     }
@@ -36,7 +36,7 @@ public class ItemController {
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
     public ItemDto update(@PathVariable final long itemId,
-                          @RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
+                          @RequestHeader(X_SHARER_USER_ID) final long userId,
                           @RequestBody final UpdateItemDto updateItemDto) {
 
         if (itemId <= 0 && updateItemDto.id() <= 0) {
@@ -49,14 +49,14 @@ public class ItemController {
     @PatchMapping("/{itemId}")
     @ResponseStatus(HttpStatus.OK)
     public ItemDto patch(@PathVariable final long itemId,
-                         @RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
+                         @RequestHeader(X_SHARER_USER_ID) final long userId,
                          @RequestBody final PatchItemDto patchItemDto) {
         return itemService.patch(patchItemDto, itemId, userId);
     }
 
     @GetMapping("/{itemId}")
-    public ItemWithCommentDto findOneById(@PathVariable @Positive final long itemId,
-                                          @RequestHeader(X_SHARER_USER_ID) @Positive final long userId) {
+    public ItemWithCommentDto findOneById(@PathVariable final long itemId,
+                                          @RequestHeader(X_SHARER_USER_ID) final long userId) {
         return commentService.findOneByItemIdAndUserId(itemId, userId);
     }
 
@@ -66,8 +66,8 @@ public class ItemController {
     }
 
     @PostMapping("/{itemId}/comment")
-    public CommentDto createComment(@PathVariable @Positive final long itemId,
-                                    @RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
+    public CommentDto createComment(@PathVariable final long itemId,
+                                    @RequestHeader(X_SHARER_USER_ID) final long userId,
                                     @RequestBody final CreateCommentDto createCommentDto) {
         return commentService.create(createCommentDto, itemId, userId);
     }

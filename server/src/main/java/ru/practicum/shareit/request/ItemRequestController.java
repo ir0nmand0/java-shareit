@@ -19,19 +19,19 @@ public class ItemRequestController {
     private static final String X_SHARER_USER_ID = "X-Sharer-User-Id";
 
     @GetMapping
-    public Collection<ItemRequestDto> findAllByUserId(@RequestHeader(X_SHARER_USER_ID) @Positive final long userId) {
+    public Collection<ItemRequestDto> findAllByUserId(@RequestHeader(X_SHARER_USER_ID) final long userId) {
         return itemRequestService.findAllByUserId(userId);
     }
 
     @GetMapping("/{requestId}")
-    public ItemRequestWithItemsDto findOneById(@RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
-                                               @PathVariable @Positive final long requestId) {
+    public ItemRequestWithItemsDto findOneById(@RequestHeader(X_SHARER_USER_ID) final long userId,
+                                               @PathVariable final long requestId) {
         return itemRequestService.findOneById(userId, requestId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public ItemRequestDto create(@RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
+    public ItemRequestDto create(@RequestHeader(X_SHARER_USER_ID) final long userId,
                                  @RequestBody final CreateItemRequestDto createItemRequestDto) {
         return itemRequestService.create(createItemRequestDto, userId);
     }

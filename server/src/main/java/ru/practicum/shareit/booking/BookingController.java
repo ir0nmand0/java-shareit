@@ -18,33 +18,33 @@ public class BookingController {
     private static final String X_SHARER_USER_ID = "X-Sharer-User-Id";
 
     @GetMapping("/{bookingId}")
-    public BookingDto findOneById(@PathVariable @Positive final long bookingId,
-                                  @RequestHeader(X_SHARER_USER_ID) @Positive final long userId) {
+    public BookingDto findOneById(@PathVariable final long bookingId,
+                                  @RequestHeader(X_SHARER_USER_ID) final long userId) {
         return bookingService.findOneById(bookingId, userId);
     }
 
     @GetMapping
-    public Collection<BookingDto> findAllById(@RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
+    public Collection<BookingDto> findAllById(@RequestHeader(X_SHARER_USER_ID) final long userId,
                                               @RequestParam(required = false, defaultValue = "ALL") final State state) {
         return bookingService.findAllById(userId, state);
     }
 
     @GetMapping("/owner")
-    public Collection<BookingDto> findAllByIdForOwner(@RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
+    public Collection<BookingDto> findAllByIdForOwner(@RequestHeader(X_SHARER_USER_ID) final long userId,
                                                       @RequestParam(required = false, defaultValue = "ALL") State state) {
         return bookingService.findAllByIdForOwner(userId, state);
     }
 
     @PostMapping
-    public BookingDto create(@RequestHeader(X_SHARER_USER_ID) @Positive final long userId,
+    public BookingDto create(@RequestHeader(X_SHARER_USER_ID) final long userId,
                              @RequestBody final CreateBookingDto createBookingDto) {
         return bookingService.create(createBookingDto, userId);
     }
 
     @PatchMapping("/{bookingId}")
-    public BookingDto updateStatus(@PathVariable @Positive long bookingId,
+    public BookingDto updateStatus(@PathVariable long bookingId,
                                    @RequestParam boolean approved,
-                                   @RequestHeader(X_SHARER_USER_ID) @Positive final long userId) {
+                                   @RequestHeader(X_SHARER_USER_ID) final long userId) {
 
         return bookingService.updateBookingStatus(bookingId, approved, userId);
     }
