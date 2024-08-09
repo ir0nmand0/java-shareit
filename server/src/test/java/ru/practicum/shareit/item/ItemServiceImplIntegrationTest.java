@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item;
 
+import org.springframework.test.context.TestPropertySource;
 import ru.practicum.shareit.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 @Transactional
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
+@TestPropertySource("classpath:test-application.properties")
 class ItemServiceImplIntegrationTest {
     private final ItemServiceImpl itemService;
     private final CommentServiceImpl commentService;

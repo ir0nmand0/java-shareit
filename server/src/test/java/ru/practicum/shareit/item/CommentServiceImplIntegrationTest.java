@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import ru.practicum.shareit.booking.model.Booking;
@@ -31,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 @Transactional
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
+@TestPropertySource("classpath:test-application.properties")
 class CommentServiceImplIntegrationTest {
     private final CommentServiceImpl commentService;
     private final InDbCommentStorage commentStorage;

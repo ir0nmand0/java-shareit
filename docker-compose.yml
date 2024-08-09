@@ -29,8 +29,8 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_PASSWORD=test
-      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=root
       - POSTGRES_DB=shareit
     healthcheck:
       test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
