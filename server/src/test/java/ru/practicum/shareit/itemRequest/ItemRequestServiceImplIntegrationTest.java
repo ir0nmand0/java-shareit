@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 @Transactional
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-@TestPropertySource("classpath:test.properties")
+@TestPropertySource(locations = "classpath:test.properties")
 class ItemRequestServiceImplIntegrationTest {
     private final ItemRequestServiceImpl itemRequestService;
     private final ItemRequestRepository itemRequestRepository;
