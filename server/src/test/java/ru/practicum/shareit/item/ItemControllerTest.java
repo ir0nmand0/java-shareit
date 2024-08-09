@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(ItemController.class)
 @AutoConfigureMockMvc
-@TestPropertySource(locations = "classpath:test.properties")
+@TestPropertySource("classpath:test.properties")
 class ItemControllerTest {
 
     @Autowired

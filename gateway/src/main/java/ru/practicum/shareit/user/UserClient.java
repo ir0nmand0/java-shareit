@@ -39,7 +39,7 @@ public class UserClient extends BaseClient {
     }
 
     public ResponseEntity<Object> patch(PatchUserDto patchUserDto, long userId) {
-        return patch("", userId, patchUserDto);
+        return patch(String.format("/%d", userId), patchUserDto);
     }
 
     public ResponseEntity<Object> findOneById(final long userId) {
