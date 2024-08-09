@@ -1,7 +1,10 @@
 package ru.practicum.shareit.booking.service;
 
 import ru.practicum.shareit.booking.model.State;
-import ru.practicum.shareit.booking.model.dto.*;
+import ru.practicum.shareit.booking.model.dto.BookingDto;
+import ru.practicum.shareit.booking.model.dto.CreateBookingDto;
+import ru.practicum.shareit.booking.model.dto.PatchBookingDto;
+import ru.practicum.shareit.booking.model.dto.UpdateBookingDto;
 
 import java.util.Collection;
 
