@@ -8,7 +8,7 @@ services:
     depends_on:
       - server
     environment:
-      - SHAREIT_SERVER_URL=http://localhost:9090
+      - SHAREIT_SERVER_URL=http://server:9090
 
   server:
     build: server
@@ -24,7 +24,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=test
 
   db:
-    image: postgres:16.1
+    image: postgres:16.1-alpine
     container_name: shareit-db
     ports:
       - "5432:5432"
