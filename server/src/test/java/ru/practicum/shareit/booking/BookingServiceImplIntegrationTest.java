@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-@TestPropertySource(locations="classpath:test.properties")
+@TestPropertySource("classpath:test.properties")
 @Transactional
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 class BookingServiceImplIntegrationTest {
