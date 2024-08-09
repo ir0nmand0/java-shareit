@@ -1,0 +1,26 @@
+logging:
+    level:
+        org:
+            springframework:
+                orm:
+                    jpa: INFO
+                    jpa.JpaTransactionManager: DEBUG
+                transaction: INFO
+                transaction.interceptor: TRACE
+server:
+    port: 9090
+spring:
+    datasource:
+        driverClassName: org.postgresql.Driver
+        password: ${POSTGRES_PASSWORD}
+        url: ${SPRING_DATASOURCE_URL}
+        username: ${POSTGRES_USER}
+    jpa:
+        hibernate:
+            ddl-auto: none
+        properties:
+            hibernate:
+                format_sql: true
+    sql:
+        init:
+            mode: always

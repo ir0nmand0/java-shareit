@@ -3,10 +3,8 @@ package ru.practicum.shareit.item;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.exception.ConditionsNotMetException;
 import ru.practicum.shareit.item.model.comment.dto.CreateCommentDto;
@@ -17,8 +15,6 @@ import ru.practicum.shareit.item.model.dto.UpdateItemDto;
 @RestController
 @RequestMapping("/items")
 @RequiredArgsConstructor
-@Slf4j
-@Validated
 public class ItemController {
     private final ItemClient itemClient;
     private static final String X_SHARER_USER_ID = "X-Sharer-User-Id";
