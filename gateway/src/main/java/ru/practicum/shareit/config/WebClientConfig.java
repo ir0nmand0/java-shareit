@@ -16,15 +16,19 @@ import ru.practicum.shareit.user.UserClient;
 public class WebClientConfig {
     @Value("${shareit-server.url}")
     private String shareitServerUrl;
-    private static final String ITEMS_API_PREFIX = "/items";
-    private static final String USERS_API_PREFIX = "/users";
-    private static final String REQUESTS_API_PREFIX = "/requests";
-    private static final String BOOKINGS_API_PREFIX = "/bookings";
+    @Value("${shareit-server.items}")
+    private String itemsApiPrefix;
+    @Value("${shareit-server.users}")
+    private String usersApiPrefix;
+    @Value("${shareit-server.requests}")
+    private String requestsApiPrefix;
+    @Value("${shareit-server.bookings}")
+    private String bookingsApiPrefix;
 
     @Bean
     public ItemClient itemClient(RestTemplateBuilder restTemplateBuilder) {
         RestTemplate restTemplate = restTemplateBuilder
-                .uriTemplateHandler(new DefaultUriBuilderFactory(shareitServerUrl + ITEMS_API_PREFIX))
+                .uriTemplateHandler(new DefaultUriBuilderFactory(shareitServerUrl + itemsApiPrefix))
                 .requestFactory(() -> new HttpComponentsClientHttpRequestFactory())
                 .build();
 
@@ -34,7 +38,7 @@ public class WebClientConfig {
     @Bean
     public UserClient userClientClient(RestTemplateBuilder restTemplateBuilder) {
         RestTemplate restTemplate = restTemplateBuilder
-                .uriTemplateHandler(new DefaultUriBuilderFactory(shareitServerUrl + USERS_API_PREFIX))
+                .uriTemplateHandler(new DefaultUriBuilderFactory(shareitServerUrl + usersApiPrefix))
                 .requestFactory(() -> new HttpComponentsClientHttpRequestFactory())
                 .build();
 
@@ -44,7 +48,7 @@ public class WebClientConfig {
     @Bean
     public ItemRequestClient itemRequestClient(RestTemplateBuilder restTemplateBuilder) {
         RestTemplate restTemplate = restTemplateBuilder
-                .uriTemplateHandler(new DefaultUriBuilderFactory(shareitServerUrl + REQUESTS_API_PREFIX))
+                .uriTemplateHandler(new DefaultUriBuilderFactory(shareitServerUrl + requestsApiPrefix))
                 .requestFactory(() -> new HttpComponentsClientHttpRequestFactory())
                 .build();
 
@@ -54,7 +58,7 @@ public class WebClientConfig {
     @Bean
     public BookingClient bookingClient(RestTemplateBuilder restTemplateBuilder) {
         RestTemplate restTemplate = restTemplateBuilder
-                .uriTemplateHandler(new DefaultUriBuilderFactory(shareitServerUrl + BOOKINGS_API_PREFIX))
+                .uriTemplateHandler(new DefaultUriBuilderFactory(shareitServerUrl + bookingsApiPrefix))
                 .requestFactory(() -> new HttpComponentsClientHttpRequestFactory())
                 .build();
 
