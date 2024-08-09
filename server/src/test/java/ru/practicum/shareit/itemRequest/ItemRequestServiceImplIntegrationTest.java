@@ -1,5 +1,6 @@
 package ru.practicum.shareit.itemRequest;
 
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,20 +23,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Transactional
-@TestPropertySource("classpath:test-application.properties")
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@TestPropertySource(locations = "classpath:test.properties")
 class ItemRequestServiceImplIntegrationTest {
-
-    @Autowired
-    private ItemRequestServiceImpl itemRequestService;
-
-    @Autowired
-    private ItemRequestRepository itemRequestRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private ItemRepository itemRepository;
+    private final ItemRequestServiceImpl itemRequestService;
+    private final ItemRequestRepository itemRequestRepository;
+    private final UserRepository userRepository;
+    private final ItemRepository itemRepository;
 
     @BeforeEach
     public void setup() {
@@ -47,8 +41,8 @@ class ItemRequestServiceImplIntegrationTest {
     @Test
     void createItemRequest() {
         User user = new User();
-        user.setName("John Doe");
-        user.setEmail("john.doe@example.com");
+        user.setName("John Wick");
+        user.setEmail("john.wick@ya.ru");
         userRepository.save(user);
 
         CreateItemRequestDto createItemRequestDto = new CreateItemRequestDto("Need a screwdriver");

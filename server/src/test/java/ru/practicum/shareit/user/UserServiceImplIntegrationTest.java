@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 @Transactional
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-@TestPropertySource("classpath:test-application.properties")
+@TestPropertySource("classpath:test.properties")
 class UserServiceImplIntegrationTest {
     private final UserServiceImpl userService;
     private final UserRepository userRepository;
