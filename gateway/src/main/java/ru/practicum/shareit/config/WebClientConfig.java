@@ -24,12 +24,13 @@ public class WebClientConfig {
     private String requestsApiPrefix;
     @Value("${shareit-server.bookings}")
     private String bookingsApiPrefix;
+    private static final HttpComponentsClientHttpRequestFactory FACTORY = new HttpComponentsClientHttpRequestFactory();
 
     @Bean
     public ItemClient itemClient(RestTemplateBuilder restTemplateBuilder) {
         RestTemplate restTemplate = restTemplateBuilder
                 .uriTemplateHandler(new DefaultUriBuilderFactory(shareitServerUrl + itemsApiPrefix))
-                .requestFactory(() -> new HttpComponentsClientHttpRequestFactory())
+                .requestFactory(() -> FACTORY)
                 .build();
 
         return new ItemClient(restTemplate);
@@ -39,7 +40,7 @@ public class WebClientConfig {
     public UserClient userClientClient(RestTemplateBuilder restTemplateBuilder) {
         RestTemplate restTemplate = restTemplateBuilder
                 .uriTemplateHandler(new DefaultUriBuilderFactory(shareitServerUrl + usersApiPrefix))
-                .requestFactory(() -> new HttpComponentsClientHttpRequestFactory())
+                .requestFactory(() -> FACTORY)
                 .build();
 
         return new UserClient(restTemplate);
@@ -49,7 +50,7 @@ public class WebClientConfig {
     public ItemRequestClient itemRequestClient(RestTemplateBuilder restTemplateBuilder) {
         RestTemplate restTemplate = restTemplateBuilder
                 .uriTemplateHandler(new DefaultUriBuilderFactory(shareitServerUrl + requestsApiPrefix))
-                .requestFactory(() -> new HttpComponentsClientHttpRequestFactory())
+                .requestFactory(() -> FACTORY)
                 .build();
 
         return new ItemRequestClient(restTemplate);
@@ -59,7 +60,7 @@ public class WebClientConfig {
     public BookingClient bookingClient(RestTemplateBuilder restTemplateBuilder) {
         RestTemplate restTemplate = restTemplateBuilder
                 .uriTemplateHandler(new DefaultUriBuilderFactory(shareitServerUrl + bookingsApiPrefix))
-                .requestFactory(() -> new HttpComponentsClientHttpRequestFactory())
+                .requestFactory(() -> FACTORY)
                 .build();
 
         return new BookingClient(restTemplate);
